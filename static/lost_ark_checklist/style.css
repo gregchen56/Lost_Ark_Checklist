@@ -1,0 +1,13 @@
+.row-checkbox {
+    width: 12.5%;
+    flex: 0 0 12.5%;
+    min-width: 12.5%;
+    max-width: 12.5%;
+}
+
+.row-name {
+    width: 87.5%;
+    flex: 0 0 87.5%;
+    min-width: 87.5%;
+    max-width: 87.5%;
+}
