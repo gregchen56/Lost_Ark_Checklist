@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lost Ark Checklist</title>
+    <link rel="stylesheet" href="{% static 'lost_ark_checklist/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'lost_ark_checklist/style.css' %}">
+  </head>
+  <body>
+
+
+    <h1>This is the start of the lost ark checklist</h1>
+    
+    <ul>
+        {% for daily in roster_dailies %}
+            <li>
+                {{ forloop.counter }} - {{ daily }} <input type="checkbox" value="{{ daily.completed }}">
+            </li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for weekly in roster_weeklies %}
+            <li>
+                {{ forloop.counter }} - {{ weekly }} <input type="checkbox" value="{{ weekly.completed }}">
+            </li>
+        {% endfor %}
+    </ul>
+
+    
+    {% for char, checklist in char_checklist.items %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-3">
+                <table class="table table-dark table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ char }}</th>
+                            <td>Buttons go here</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for daily in checklist.0 %}
+                        <tr>
+                            <td>{{ forloop.counter }} - {{ daily }}</td>
+                            <td><input type="checkbox" value="{{ daily.completed }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="col-3">
+                <table class="table table-dark table-striped table-hover">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-7">{{ char }}</th>
+                            <td class="col-5">Buttons go here</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for weekly in checklist.1 %}
+                        <tr class="row">
+                            <td class="row-name text-left">{{ forloop.counter }} - {{ weekly }}</td>
+                            <td class="row-checkbox text-center"><input type="checkbox" value="{{ weekly.completed }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    
+	<!-- <script src="index.js"></script> -->
+  </body>
+</html>
