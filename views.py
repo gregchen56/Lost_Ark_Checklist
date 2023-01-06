@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import HttpResponse, render
 from .models import RosterDaily, RosterWeekly, CharDaily, CharWeekly, User
-from .forms import CharacterForm
+from .forms import CharacterForm, CharDailyForm
+from django.template import RequestContext
+import json
 
 # Create your views here.
 def home_view(request):
@@ -15,13 +17,13 @@ def home_view(request):
             if daily.char.char_name not in char_checklist:
                 char_checklist[daily.char.char_name] = [[], []]
 
-            char_checklist[daily.char.char_name][0].append(daily.name)
+            char_checklist[daily.char.char_name][0].append(daily)
 
         for weekly in char_weeklies:
             if weekly.char.char_name not in char_checklist:
                 char_checklist[weekly.char.char_name] = [[], []]
 
-            char_checklist[weekly.char.char_name][1].append(weekly.name)
+            char_checklist[weekly.char.char_name][1].append(weekly)
 
         context = {
             'roster_dailies': roster_dailies,
@@ -52,17 +54,26 @@ def home_view(request):
     return render(request, 'lost_ark_checklist/index.html', context)
 
 def add_character_view(request):
-    form = CharacterForm(request.POST or None)
-    if form.is_valid():
-        form.save()
+    if request.POST:
+        checked = request.POST['checked']
+        item_name = request.POST['itemName']
+        item_id = request.POST['itemID']
+        char_daily = CharDaily.objects.filter(name=item_name, char_id=item_id).get()
 
-    context = {
-        'form': form
-    }
+        if checked == 'true':
+            char_daily.completed = True
 
-    print("----------Request details below----------")
-    cookies = request.COOKIES
-    print(cookies)
-    print(request.user)
+        else:
+            char_daily.completed = False
 
-    return render(request, 'lost_ark_checklist/add_character.html', context)
+        char_daily.save()
+        return HttpResponse('')
+
+    else:
+        scrapper_una_daily1 = CharDaily.objects.get(id=2)
+        form = CharDailyForm(instance=scrapper_una_daily1)
+        context = {
+            'form': form
+        }
+
+        return render(request, 'lost_ark_checklist/add_character.html', context)

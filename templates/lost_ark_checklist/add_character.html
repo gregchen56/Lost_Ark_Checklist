@@ -1,5 +1,37 @@
-<h1>Page to add a new character</h1>
-<form method="POST"> {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save" />
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Daily</title>
+  </head>
+  <body>
+
+    <h1>Page to add a new character daily</h1>
+
+    <div class="message"></div>
+    
+    <div>
+        <form action="" method="POST" id="post-form"> {% csrf_token %}
+            <p>{{ form.char }}</p>
+            <p>{{ form.name }}</p>
+            <p>{{ form.rested }}</p>
+            <p>
+                <label for="id_completed">Completed:</label>
+                {% if form.completed %}
+                    <input type="checkbox" checked onclick="assignmentFinish(this, '{{ form.name.value }}', '{{ form.char.value }}')">
+                {% else %}
+                    <input type="checkbox" onclick="assignmentFinish(this, '{{ form.name.value }}', '{{ form.char.value }}')">
+                {% endif %}
+            </p>
+        </form>
+    </div>
+
+    <script src="{% static 'lost_ark_checklist/jquery-3.6.3.min.js' %}"></script>
+    <script src="{% static 'lost_ark_checklist/main.js' %}"></script>
+    
+  </body>
+</html>
+

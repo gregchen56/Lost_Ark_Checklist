@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+from pathlib import Path
 
 # Create your models here.
 class User(models.Model):
@@ -21,6 +23,7 @@ class CharDaily(models.Model):
     name = models.CharField(max_length=100)
     rested = models.PositiveSmallIntegerField()
     completed = models.BooleanField()
+    img_name = models.CharField(max_length=100, blank=True)
 
     def __str__(self) -> str:
         return f"{self.char} - {self.name} - {self.rested}"

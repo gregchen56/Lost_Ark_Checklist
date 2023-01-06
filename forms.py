@@ -1,10 +1,21 @@
-from django import forms
-from .models import Character
+from django.forms import ModelForm, CheckboxInput
+from .models import Character, CharDaily
 
-class CharacterForm(forms.ModelForm):
+class CharacterForm(ModelForm):
     class Meta:
         model = Character
         fields = [
             'user',
             'char_name',
         ]
+
+class CharDailyForm(ModelForm):
+    class Meta:
+        model = CharDaily
+        fields = (
+            "__all__"
+        )
+        # widgets = {
+        #     'completed': CheckboxInput(attrs={'onclick':'this.form.submit();'}),
+        # }
+
