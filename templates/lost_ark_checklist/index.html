@@ -13,40 +13,22 @@
 
 
     <h1>This is the start of the lost ark checklist</h1>
-    
-    <ul>
-        {% for daily in roster_dailies %}
-            <li>
-                {{ forloop.counter }} - {{ daily }} <input type="checkbox" value="{{ daily.completed }}">
-            </li>
-        {% endfor %}
-    </ul>
 
-    <ul>
-        {% for weekly in roster_weeklies %}
-            <li>
-                {{ forloop.counter }} - {{ weekly }} <input type="checkbox" value="{{ weekly.completed }}">
-            </li>
-        {% endfor %}
-    </ul>
-
-    
-    {% for char, checklist in char_checklist.items %}
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-3">
                 <table class="table table-dark table-striped table-hover">
                     <thead>
-                        <tr>
-                            <th>{{ char }}</th>
-                            <td>Buttons go here</td>
+                        <tr class="row">
+                            <th class="col-8">Roster Dailies</th>
+                            <td class="col-4">Buttons</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for daily in checklist.0 %}
-                        <tr>
-                            <td>{{ forloop.counter }} - {{ daily }}</td>
-                            <td><input type="checkbox" value="{{ daily.completed }}"></td>
+                        {% for daily in roster_dailies %}
+                        <tr class="row">
+                            <td class="col-10 text-left"><img class="task-icon" src="../static/lost_ark_checklist/img/{{ daily.img_name }}">{{ daily.name }}</td>
+                            <td class="col-2 text-center"><input type="checkbox" class="larger" value="{{ daily.completed }}"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -57,15 +39,59 @@
                 <table class="table table-dark table-striped table-hover">
                     <thead>
                         <tr class="row">
-                            <th class="col-7">{{ char }}</th>
-                            <td class="col-5">Buttons go here</td>
+                            <th class="col-8">{{ char }}</th>
+                            <td class="col-4">Buttons</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for weekly in roster_weeklies %}
+                        <tr class="row">
+                            <td class="col-10 text-left"><img class="task-icon" src="../static/lost_ark_checklist/img/{{ weekly.img_name }}">{{ weekly.name }}</td>
+                            <td class="col-2 text-center"><input type="checkbox" class="larger" value="{{ weekly.completed }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+    {% for char, checklist in char_checklist.items %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-3">
+                <table class="table table-dark table-striped table-hover">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-8">{{ char }}</th>
+                            <td class="col-4">Buttons</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for daily in checklist.0 %}
+                        <tr class="row">
+                            <td class="col-10 text-left"><img class="task-icon" src="../static/lost_ark_checklist/img/{{ daily.img_name }}">{{ daily.name }}</td>
+                            <td class="col-2 text-center"><input type="checkbox" class="larger" value="{{ daily.completed }}" name="checkbox{{ daily.id }}"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="col-3">
+                <table class="table table-dark table-striped table-hover">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-8">{{ char }}</th>
+                            <td class="col-4">Buttons</td>
                         </tr>
                     </thead>
                     <tbody>
                         {% for weekly in checklist.1 %}
                         <tr class="row">
-                            <td class="row-name text-left">{{ forloop.counter }} - {{ weekly }}</td>
-                            <td class="row-checkbox text-center"><input type="checkbox" value="{{ weekly.completed }}"></td>
+                            <td class="col-10 text-left"><img class="task-icon" src="../static/lost_ark_checklist/img/{{ weekly.img_name }}">{{ weekly.name }}</td>
+                            <td class="col-2 text-center"><input type="checkbox" class="larger" value="{{ weekly.completed }}"></td>
                         </tr>
                         {% endfor %}
                     </tbody>
