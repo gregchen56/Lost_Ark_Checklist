@@ -15,7 +15,3 @@ class CharDailyForm(ModelForm):
         fields = (
             "__all__"
         )
-        # widgets = {
-        #     'completed': CheckboxInput(attrs={'onclick':'this.form.submit();'}),
-        # }
-

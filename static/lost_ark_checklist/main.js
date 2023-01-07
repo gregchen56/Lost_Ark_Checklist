@@ -1,11 +1,12 @@
-function assignmentFinish(element, name, id) {
+function assignmentFinish(element, model, name, id) {
     $.ajax({
-        type:'POST',
-        url: "add",
+        type:"POST",
+        url: "",
         data:{
-            checked: element.checked,
+            modelName: model,
             itemName: name,
             itemID: id,
+            checked: element.checked,
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
         },
         success: function(){
