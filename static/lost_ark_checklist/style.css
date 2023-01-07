@@ -32,6 +32,10 @@ input.larger {
     height: 18px;
 }
 
+.completed {
+    --bs-table-accent-bg: rgba(30, 72, 52, 0.5) !important;
+}
+
 img.task-icon {
     margin-right: 5px;
 }

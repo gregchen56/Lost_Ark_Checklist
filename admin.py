@@ -5,7 +5,7 @@ from .models import (
     CharDaily,
     CharWeekly,
     RosterDaily,
-    RosterWeekly
+    RosterWeekly,
 )
 
 # Register your models here.
