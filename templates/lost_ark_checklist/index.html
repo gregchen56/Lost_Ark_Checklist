@@ -14,160 +14,173 @@
 
     <h1>This is the start of the lost ark checklist</h1>
 
+    <!-- <div class="container">
+        <form action="add" method="POST"> {% csrf_token %}
+            <div class="row justify-content-right">
+                <p class="col-11">{{ form.char_name }}</p>
+                <input class="col-1" type="submit" name="submit-add-char-form" value="+">
+            </div>
+        </form>
+    </div> -->
+
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-3">
-                <table class="table table-dark table-striped table-hover">
-                    <thead>
-                        <tr class="row">
-                            <th class="col-8">Roster Dailies</th>
-                            <td class="col-4">Buttons</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <form action="" method="POST"> {% csrf_token %}
-                        {% for daily in roster_dailies %}
+        <div class="container checklist_table">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <table class="table table-dark table-striped table-hover">
+                        <thead>
                             <tr class="row">
-                                <td class="col-10 text-left">
-                                    {% if daily.img_name %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/{{ daily.img_name }}">
-                                    {% else %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
-                                    {% endif %}
-                                    
-                                    {{ daily.name }}
-                                </td>
-                                <td class="col-2 text-center">
-                                    {% if daily.completed %}
-                                        <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'RosterDaily', '{{ daily.name }}', '{{ daily.user.id }}')">
-                                    {% else %}
-                                        <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'RosterDaily', '{{ daily.name }}', '{{ daily.user.id }}')">
-                                    {% endif %}
-                                </td>
+                                <th class="col-8">Roster Dailies</th>
+                                <td class="col-4">Buttons</td>
                             </tr>
-                        {% endfor %}
-                        </form>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="col-3">
-                <table class="table table-dark table-striped table-hover">
-                    <thead>
-                        <tr class="row">
-                            <th class="col-8">Roster Weeklies</th>
-                            <td class="col-4">Buttons</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <form action="" method="POST"> {% csrf_token %}
-                        {% for weekly in roster_weeklies %}
+                        </thead>
+                        <tbody>
+                            <form action="" method="POST"> {% csrf_token %}
+                            {% for daily in roster_dailies %}
+                                <tr class="row">
+                                    <td class="col-10 text-left">
+                                        {% if daily.img_name %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/{{ daily.img_name }}">
+                                        {% else %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
+                                        {% endif %}
+                                        
+                                        {{ daily.name }}
+                                    </td>
+                                    <td class="col-2 text-center">
+                                        {% if daily.completed %}
+                                            <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'RosterDaily', '{{ daily.name }}', '{{ daily.user.id }}')">
+                                        {% else %}
+                                            <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'RosterDaily', '{{ daily.name }}', '{{ daily.user.id }}')">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <table class="table table-dark table-striped table-hover">
+                        <thead>
                             <tr class="row">
-                                <td class="col-10 text-left">
-                                    {% if weekly.img_name %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/{{ weekly.img_name }}">
-                                    {% else %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
-                                    {% endif %}
-                                    
-                                    {{ weekly.name }}
-                                </td>
-                                <td class="col-2 text-center">
-                                    {% if weekly.completed %}
-                                        <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'RosterWeekly', '{{ weekly.name }}', '{{ weekly.user.id }}')">
-                                    {% else %}
-                                        <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'RosterWeekly', '{{ weekly.name }}', '{{ weekly.user.id }}')">
-                                    {% endif %}
-                                </td>
+                                <th class="col-8">Roster Weeklies</th>
+                                <td class="col-4">Buttons</td>
                             </tr>
-                        {% endfor %}
-                        </form>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <form action="" method="POST"> {% csrf_token %}
+                            {% for weekly in roster_weeklies %}
+                                <tr class="row">
+                                    <td class="col-10 text-left">
+                                        {% if weekly.img_name %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/{{ weekly.img_name }}">
+                                        {% else %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
+                                        {% endif %}
+                                        
+                                        {{ weekly.name }}
+                                    </td>
+                                    <td class="col-2 text-center">
+                                        {% if weekly.completed %}
+                                            <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'RosterWeekly', '{{ weekly.name }}', '{{ weekly.user.id }}')">
+                                        {% else %}
+                                            <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'RosterWeekly', '{{ weekly.name }}', '{{ weekly.user.id }}')">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
+        
+        <div class="container checklist_table">
+        {% for char, checklist in char_checklist.items %}
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <table class="table table-dark table-striped table-hover">
+                        <thead>
+                            <tr class="row">
+                                <th class="col-8">{{ char }}</th>
+                                <td class="col-4">Buttons</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form action="" method="POST"> {% csrf_token %}
+                            {% for daily in checklist.0 %}
+                                {% if daily.completed %}
+                                    <tr class="row">
+                                {% else %}
+                                    <tr class="row">
+                                {% endif %}
+                                    <td class="col-10 text-left">
+                                        {% if daily.img_name %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/{{ daily.img_name }}">
+                                        {% else %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
+                                        {% endif %}
+                                        
+                                        {{ daily.name }}
+                                    </td>
+                                    <td class="col-2 text-center">
+                                        {% if daily.completed %}
+                                            <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'CharDaily', '{{ daily.name }}', '{{ daily.char.id }}')">
+                                        {% else %}
+                                            <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'CharDaily', '{{ daily.name }}', '{{ daily.char.id }}')">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <table class="table table-dark table-striped table-hover">
+                        <thead>
+                            <tr class="row">
+                                <th class="col-8">{{ char }}</th>
+                                <td class="col-4">Buttons</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <form action="" method="POST"> {% csrf_token %}
+                            {% for weekly in checklist.1 %}
+                                <tr class="row">
+                                    <td class="col-10 text-left">
+                                        {% if weekly.img_name %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/{{ weekly.img_name }}">
+                                        {% else %}
+                                            <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
+                                        {% endif %}
+                                        
+                                        {{ weekly.name }}
+                                    </td>
+                                    <td class="col-2 text-center">
+                                        {% if weekly.completed %}
+                                            <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'CharWeekly', '{{ weekly.name }}', '{{ weekly.char.id }}')">
+                                        {% else %}
+                                            <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'CharWeekly', '{{ weekly.name }}', '{{ weekly.char.id }}')">
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </form>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
     
-    {% for char, checklist in char_checklist.items %}
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-3">
-                <table class="table table-dark table-striped table-hover">
-                    <thead>
-                        <tr class="row">
-                            <th class="col-8">{{ char }}</th>
-                            <td class="col-4">Buttons</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <form action="" method="POST"> {% csrf_token %}
-                        {% for daily in checklist.0 %}
-                            {% if daily.completed %}
-                                <tr class="row completed">
-                            {% else %}
-                                <tr class="row">
-                            {% endif %}
-                                <td class="col-10 text-left">
-                                    {% if daily.img_name %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/{{ daily.img_name }}">
-                                    {% else %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
-                                    {% endif %}
-                                    
-                                    {{ daily.name }}
-                                </td>
-                                <td class="col-2 text-center">
-                                    {% if daily.completed %}
-                                        <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'CharDaily', '{{ daily.name }}', '{{ daily.char.id }}')">
-                                    {% else %}
-                                        <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'CharDaily', '{{ daily.name }}', '{{ daily.char.id }}')">
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </form>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="col-3">
-                <table class="table table-dark table-striped table-hover">
-                    <thead>
-                        <tr class="row">
-                            <th class="col-8">{{ char }}</th>
-                            <td class="col-4">Buttons</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <form action="" method="POST"> {% csrf_token %}
-                        {% for weekly in checklist.1 %}
-                            <tr class="row">
-                                <td class="col-10 text-left">
-                                    {% if weekly.img_name %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/{{ weekly.img_name }}">
-                                    {% else %}
-                                        <img class="task-icon" src="../static/lost_ark_checklist/img/mokoko.png">
-                                    {% endif %}
-                                    
-                                    {{ weekly.name }}
-                                </td>
-                                <td class="col-2 text-center">
-                                    {% if weekly.completed %}
-                                        <input type="checkbox" class="larger" checked onclick="assignmentFinish(this, 'CharWeekly', '{{ weekly.name }}', '{{ weekly.char.id }}')">
-                                    {% else %}
-                                        <input type="checkbox" class="larger" onclick="assignmentFinish(this, 'CharWeekly', '{{ weekly.name }}', '{{ weekly.char.id }}')">
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </form>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+        
 
     
     <script src="{% static 'lost_ark_checklist/jquery-3.6.3.min.js' %}"></script>

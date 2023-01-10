@@ -1,6 +1,6 @@
-from django.shortcuts import HttpResponse, render
-from .models import RosterDaily, RosterWeekly, CharDaily, CharWeekly, User
-from .forms import CharDailyForm
+from django.shortcuts import HttpResponse, render, redirect
+from .models import User, Character, RosterDaily, RosterWeekly, CharDaily, CharWeekly
+from .forms import CharacterForm
 from .default_checklist_items import (
     DEFAULT_ROSTER_DAILIES,
     DEFAULT_ROSTER_WEEKLIES,
@@ -10,8 +10,10 @@ from .default_checklist_items import (
 
 # Create your views here.
 def home_view(request):
+    print('hitting home view')
     if request.user.is_authenticated:
         if request.POST:
+            print("request is post")
             model_name = request.POST['modelName']
             item_name = request.POST['itemName']
             item_id = request.POST['itemID']
@@ -39,9 +41,11 @@ def home_view(request):
             return HttpResponse('')
 
         else:
+            print("request is get")
             roster_dailies = RosterDaily.objects.select_related('user').filter(user_id=request.user.id)
             roster_weeklies = RosterWeekly.objects.select_related('user').filter(user_id=request.user.id)
             char_dailies = CharDaily.objects.select_related('char__user').filter(char__user__id=request.user.id)
+            print(char_dailies[0].char.id)
             char_weeklies = CharWeekly.objects.select_related('char__user').filter(char__user__id=request.user.id)
             char_checklist = {}
 
@@ -57,16 +61,19 @@ def home_view(request):
 
                 char_checklist[weekly.char.char_name][1].append(weekly)
 
+            form = CharacterForm()
             context = {
                 'roster_dailies': roster_dailies,
                 'roster_weeklies': roster_weeklies,
                 'char_checklist': char_checklist,
+                'form': form,
             }
 
     # Anonymous returning user
     elif request.session.session_key:
         print("------------------RETURNING ANON USER------------------")
         if request.POST:
+            print("request is post")
             model_name = request.POST['modelName']
             item_name = request.POST['itemName']
             item_id = request.POST['itemID']
@@ -94,6 +101,7 @@ def home_view(request):
             return HttpResponse('')
 
         else:
+            print("request is get")
             user = User.objects.get(session_key=request.session.session_key)
             roster_dailies = RosterDaily.objects.select_related('user').filter(user_id=user.id)
             roster_weeklies = RosterWeekly.objects.select_related('user').filter(user_id=user.id)
@@ -113,13 +121,15 @@ def home_view(request):
 
                 char_checklist[weekly.char.char_name][1].append(weekly)
 
+            form = CharacterForm()
             context = {
                 'roster_dailies': roster_dailies,
                 'roster_weeklies': roster_weeklies,
                 'char_checklist': char_checklist,
+                'form': form,
             }
 
-        request.session.save()
+            request.session.save()
 
     # Session key is none. User's first time visiting the site.
     else:
@@ -139,46 +149,92 @@ def home_view(request):
 
         roster_dailies = RosterDaily.objects.select_related('user').filter(user_id=user.id)
         roster_weeklies = RosterWeekly.objects.select_related('user').filter(user_id=user.id)
+        form = CharacterForm()
         context = {
             'roster_dailies': roster_dailies,
             'roster_weeklies': roster_weeklies,
+            'form': form,
         }
 
     return render(request, 'lost_ark_checklist/index.html', context)
 
 def add_character_view(request):
+    print('hitting add_char_view')
     if request.POST:
-        model_name = request.POST['modelName']
-        item_name = request.POST['itemName']
-        item_id = request.POST['itemID']
-        checked = request.POST['checked']
+        if "submit-add-char-form" in request.POST:
+            if request.user.is_authenticated:
+                user = User.objects.get(username=request.user)
+            else:
+                user = User.objects.get(session_key=request.session.session_key)
+            new_char = Character.objects.create(user=user, char_name=request.POST['char_name'])
 
-        if model_name == "RosterDaily":
-            checklist_item = RosterDaily.objects.filter(name=item_name, user_id=item_id).get()
-        elif model_name == "RosterWeekly":
-            checklist_item = RosterWeekly.objects.filter(name=item_name, user_id=item_id).get()
-        elif model_name == "CharDaily":
-            checklist_item = CharDaily.objects.filter(name=item_name, char_id=item_id).get()
-        elif model_name == "CharWeekly":
-            checklist_item = CharWeekly.objects.filter(name=item_name, char_id=item_id).get()
+            char_dailies = [CharDaily(char=new_char, name=cdaily[0], rested=0, completed=False, img_name=cdaily[1]) for cdaily in DEFAULT_CHARACTER_DAILIES]
+            CharDaily.objects.bulk_create(char_dailies)
+            char_weeklies = [CharWeekly(char=new_char, name=cweekly[0], completed=False, img_name=cweekly[1]) for cweekly in DEFAULT_CHARACTER_WEEKLIES]
+            CharWeekly.objects.bulk_create(char_weeklies)
+
+            roster_dailies = RosterDaily.objects.select_related('user').filter(user_id=user.id)
+            roster_weeklies = RosterWeekly.objects.select_related('user').filter(user_id=user.id)
+            char_dailies = CharDaily.objects.select_related('char__user').filter(char__user__id=user.id)
+            char_weeklies = CharWeekly.objects.select_related('char__user').filter(char__user__id=user.id)
+            char_checklist = {}
+
+            for daily in char_dailies:
+                if daily.char.char_name not in char_checklist:
+                    char_checklist[daily.char.char_name] = [[], []]
+
+                char_checklist[daily.char.char_name][0].append(daily)
+
+            for weekly in char_weeklies:
+                if weekly.char.char_name not in char_checklist:
+                    char_checklist[weekly.char.char_name] = [[], []]
+
+                char_checklist[weekly.char.char_name][1].append(weekly)
+
+            form = CharacterForm()
+            context = {
+                'roster_dailies': roster_dailies,
+                'roster_weeklies': roster_weeklies,
+                'char_checklist': char_checklist,
+                'form': form,
+            }
+
+            request.session.save()
+            print('first if')
+            return redirect(home_view)
+
         else:
-            # TODO implement this
-            pass
+            model_name = request.POST['modelName']
+            item_name = request.POST['itemName']
+            item_id = request.POST['itemID']
+            checked = request.POST['checked']
 
-        if checked == 'true':
-            checklist_item.completed = True
+            if model_name == "RosterDaily":
+                checklist_item = RosterDaily.objects.filter(name=item_name, user_id=item_id).get()
+            elif model_name == "RosterWeekly":
+                checklist_item = RosterWeekly.objects.filter(name=item_name, user_id=item_id).get()
+            elif model_name == "CharDaily":
+                checklist_item = CharDaily.objects.filter(name=item_name, char_id=item_id).get()
+            elif model_name == "CharWeekly":
+                checklist_item = CharWeekly.objects.filter(name=item_name, char_id=item_id).get()
+            else:
+                # TODO implement this
+                pass
 
-        else:
-            checklist_item.completed = False
+            if checked == 'true':
+                checklist_item.completed = True
 
-        checklist_item.save()
-        return HttpResponse('')
+            else:
+                checklist_item.completed = False
+
+            checklist_item.save()
+            print('second if')
+            return HttpResponse('')
 
     else:
-        scrapper_una_daily1 = CharDaily.objects.get(id=2)
-        form = CharDailyForm(instance=scrapper_una_daily1)
+        form = CharacterForm()
         context = {
             'form': form
         }
 
-        return render(request, 'lost_ark_checklist/add_character.html', context)
+        return render(request, 'lost_ark_checklist/index.html', context)
