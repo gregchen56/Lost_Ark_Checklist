@@ -13,3 +13,26 @@ function assignmentFinish(element, model, name, id) {
         }
     });
 }
+
+var now = new Date();
+if (now.getHours() >= 2){
+    // If page is loaded after 2AM
+    var reset_time = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate() + 1, // the next day, ...
+        2, 0, 0 // ...at 02:00:00 hours
+    );
+
+} else {
+    // If page is loaded between midnight and 2AM
+    var reset_time = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(), // the same day, ...
+        2, 0, 0 // ...at 02:00:00 hours
+    );
+}
+
+var msTillMidnight = reset_time.getTime() - now.getTime();
+setTimeout(window.location.reload.bind(window.location), msTillMidnight);

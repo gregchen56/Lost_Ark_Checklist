@@ -1,5 +1,5 @@
-from django.forms import ModelForm, CheckboxInput
-from .models import Character, CharDaily
+from django.forms import ModelForm
+from .models import Character
 
 class CharacterForm(ModelForm):
     class Meta:
@@ -8,10 +8,3 @@ class CharacterForm(ModelForm):
             'user',
             'char_name',
         ]
-
-class CharDailyForm(ModelForm):
-    class Meta:
-        model = CharDaily
-        fields = (
-            "__all__"
-        )
