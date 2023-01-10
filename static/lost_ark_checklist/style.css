@@ -39,8 +39,3 @@ img.task-icon {
 .table > :not(caption) > * > * {
     padding: 0.75em 0.5rem;
 }
-
-.checklist_table {
-    max-width: 100%;
-    min-width: 66.67%;
-}

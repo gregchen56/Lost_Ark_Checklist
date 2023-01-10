@@ -1,6 +1,5 @@
 from django.shortcuts import HttpResponse, render, redirect
 from .models import User, Character, RosterDaily, RosterWeekly, CharDaily, CharWeekly
-from .forms import CharacterForm
 from .default_checklist_items import (
     DEFAULT_ROSTER_DAILIES,
     DEFAULT_ROSTER_WEEKLIES,
@@ -61,12 +60,10 @@ def home_view(request):
 
                 char_checklist[weekly.char.char_name][1].append(weekly)
 
-            form = CharacterForm()
             context = {
                 'roster_dailies': roster_dailies,
                 'roster_weeklies': roster_weeklies,
                 'char_checklist': char_checklist,
-                'form': form,
             }
 
     # Anonymous returning user
@@ -121,12 +118,10 @@ def home_view(request):
 
                 char_checklist[weekly.char.char_name][1].append(weekly)
 
-            form = CharacterForm()
             context = {
                 'roster_dailies': roster_dailies,
                 'roster_weeklies': roster_weeklies,
                 'char_checklist': char_checklist,
-                'form': form,
             }
 
             request.session.save()
@@ -149,11 +144,9 @@ def home_view(request):
 
         roster_dailies = RosterDaily.objects.select_related('user').filter(user_id=user.id)
         roster_weeklies = RosterWeekly.objects.select_related('user').filter(user_id=user.id)
-        form = CharacterForm()
         context = {
             'roster_dailies': roster_dailies,
             'roster_weeklies': roster_weeklies,
-            'form': form,
         }
 
     return render(request, 'lost_ark_checklist/index.html', context)
@@ -191,12 +184,10 @@ def add_character_view(request):
 
                 char_checklist[weekly.char.char_name][1].append(weekly)
 
-            form = CharacterForm()
             context = {
                 'roster_dailies': roster_dailies,
                 'roster_weeklies': roster_weeklies,
                 'char_checklist': char_checklist,
-                'form': form,
             }
 
             request.session.save()
@@ -232,9 +223,7 @@ def add_character_view(request):
             return HttpResponse('')
 
     else:
-        form = CharacterForm()
         context = {
-            'form': form
         }
 
         return render(request, 'lost_ark_checklist/index.html', context)
